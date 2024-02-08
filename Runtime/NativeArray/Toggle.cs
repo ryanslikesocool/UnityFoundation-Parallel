@@ -9,7 +9,25 @@ namespace Foundation.Parallel {
 		/// <remarks>
 		/// Assumes input.Length == output.Length
 		/// </remarks>
-		public static JobHandle Toggle(NativeArray<bool> input, NativeArray<bool> output, bool deallocateInput = false, int innerloopBatchCount = 128, JobHandle dependency = default) {
+		public static JobHandle Toggle(NativeArray<bool> input, NativeArray<bool> output, JobHandle dependency = default)
+			=> Toggle(input, output, false, dependency);
+
+		/// <remarks>
+		/// Assumes input.Length == output.Length
+		/// </remarks>
+		public static JobHandle Toggle(NativeArray<bool> input, NativeArray<bool> output, int innerloopBatchCount, JobHandle dependency = default)
+			=> Toggle(input, output, false, innerloopBatchCount, dependency);
+
+		/// <remarks>
+		/// Assumes input.Length == output.Length
+		/// </remarks>
+		public static JobHandle Toggle(NativeArray<bool> input, NativeArray<bool> output, bool deallocateInput, JobHandle dependency = default)
+			=> Toggle(input, output, deallocateInput, 128, dependency);
+
+		/// <remarks>
+		/// Assumes input.Length == output.Length
+		/// </remarks>
+		public static JobHandle Toggle(NativeArray<bool> input, NativeArray<bool> output, bool deallocateInput, int innerloopBatchCount, JobHandle dependency = default) {
 			if (deallocateInput) {
 				return new ToggleJob_DeallocateInput {
 					Input = input,
@@ -45,10 +63,13 @@ namespace Foundation.Parallel {
 
 		// MARK: - Toggle In Place
 
+		public static JobHandle ToggleInPlace(NativeArray<bool> values, JobHandle dependency = default)
+			=> ToggleInPlace(values, 128, dependency);
+
 		/// <remarks>
 		/// Assumes input.Length == output.Length
 		/// </remarks>
-		public static JobHandle ToggleInPlace(NativeArray<bool> values, int innerloopBatchCount = 128, JobHandle dependency = default) => new ToggleInPlaceJob {
+		public static JobHandle ToggleInPlace(NativeArray<bool> values, int innerloopBatchCount, JobHandle dependency = default) => new ToggleInPlaceJob {
 			Values = values
 		}.Schedule(values.Length, innerloopBatchCount, dependency);
 
