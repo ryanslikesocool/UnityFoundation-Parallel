@@ -6,6 +6,8 @@ using Unity.Mathematics;
 
 namespace Foundation.Parallel {
 	public static partial class NativeArrayExtensions {
+		public interface ISwizzleJob : IJobParallelFor { }
+
 		// MARK: - float2
 
 		public static JobHandle Swizzle(NativeArray<float2> input, NativeArray<float2> output, in int2 mask, bool deallocateInput = false, int innerloopBatchCount = 128, JobHandle dependency = default) {
@@ -25,7 +27,7 @@ namespace Foundation.Parallel {
 		}
 
 		[BurstCompile(FloatPrecision.Low, FloatMode.Fast)]
-		private struct SwizzleJob_Float2 : IJobParallelFor {
+		private struct SwizzleJob_Float2 : ISwizzleJob {
 			[ReadOnly] public int2 Mask;
 			[ReadOnly] public NativeArray<float2> Input;
 			[WriteOnly] public NativeArray<float2> Output;
@@ -42,7 +44,7 @@ namespace Foundation.Parallel {
 		}
 
 		[BurstCompile(FloatPrecision.Low, FloatMode.Fast)]
-		private struct SwizzleJob_Float2_DeallocateInput : IJobParallelFor {
+		private struct SwizzleJob_Float2_DeallocateInput : ISwizzleJob {
 			[ReadOnly] public int2 Mask;
 			[ReadOnly, DeallocateOnJobCompletion] public NativeArray<float2> Input;
 			[WriteOnly] public NativeArray<float2> Output;
@@ -66,7 +68,7 @@ namespace Foundation.Parallel {
 		}.Schedule(values.Length, innerloopBatchCount, dependency);
 
 		[BurstCompile(FloatPrecision.Low, FloatMode.Fast)]
-		private struct SwizzleJob_Float2_InPlace : IJobParallelFor {
+		private struct SwizzleJob_Float2_InPlace : ISwizzleJob {
 			[ReadOnly] public int2 Mask;
 			public NativeArray<float2> Values;
 
@@ -100,7 +102,7 @@ namespace Foundation.Parallel {
 		}
 
 		[BurstCompile(FloatPrecision.Low, FloatMode.Fast)]
-		private struct SwizzleJob_Float3 : IJobParallelFor {
+		private struct SwizzleJob_Float3 : ISwizzleJob {
 			[ReadOnly] public int3 Mask;
 			[ReadOnly] public NativeArray<float3> Input;
 			[WriteOnly] public NativeArray<float3> Output;
@@ -117,7 +119,7 @@ namespace Foundation.Parallel {
 		}
 
 		[BurstCompile(FloatPrecision.Low, FloatMode.Fast)]
-		private struct SwizzleJob_Float3_DeallocateInput : IJobParallelFor {
+		private struct SwizzleJob_Float3_DeallocateInput : ISwizzleJob {
 			[ReadOnly] public int3 Mask;
 			[ReadOnly, DeallocateOnJobCompletion] public NativeArray<float3> Input;
 			[WriteOnly] public NativeArray<float3> Output;
@@ -141,7 +143,7 @@ namespace Foundation.Parallel {
 		}.Schedule(values.Length, innerloopBatchCount, dependency);
 
 		[BurstCompile(FloatPrecision.Low, FloatMode.Fast)]
-		private struct SwizzleJob_Float3_InPlace : IJobParallelFor {
+		private struct SwizzleJob_Float3_InPlace : ISwizzleJob {
 			[ReadOnly] public int3 Mask;
 			public NativeArray<float3> Values;
 
@@ -175,7 +177,7 @@ namespace Foundation.Parallel {
 		}
 
 		[BurstCompile(FloatPrecision.Low, FloatMode.Fast)]
-		private struct SwizzleJob_Float4 : IJobParallelFor {
+		private struct SwizzleJob_Float4 : ISwizzleJob {
 			[ReadOnly] public int4 Mask;
 			[ReadOnly] public NativeArray<float4> Input;
 			[WriteOnly] public NativeArray<float4> Output;
@@ -192,7 +194,7 @@ namespace Foundation.Parallel {
 		}
 
 		[BurstCompile(FloatPrecision.Low, FloatMode.Fast)]
-		private struct SwizzleJob_Float4_DeallocateInput : IJobParallelFor {
+		private struct SwizzleJob_Float4_DeallocateInput : ISwizzleJob {
 			[ReadOnly] public int4 Mask;
 			[ReadOnly, DeallocateOnJobCompletion] public NativeArray<float4> Input;
 			[WriteOnly] public NativeArray<float4> Output;
@@ -216,7 +218,7 @@ namespace Foundation.Parallel {
 		}.Schedule(values.Length, innerloopBatchCount, dependency);
 
 		[BurstCompile(FloatPrecision.Low, FloatMode.Fast)]
-		private struct SwizzleJob_Float4_InPlace : IJobParallelFor {
+		private struct SwizzleJob_Float4_InPlace : ISwizzleJob {
 			[ReadOnly] public int4 Mask;
 			public NativeArray<float4> Values;
 

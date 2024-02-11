@@ -4,6 +4,8 @@ using Unity.Burst;
 
 namespace Foundation.Parallel {
 	public static partial class NativeArrayExtensions {
+		public interface IToggleJob : IJobParallelFor { }
+
 		// MARK: - Toggle
 
 		/// <remarks>
@@ -42,7 +44,7 @@ namespace Foundation.Parallel {
 		}
 
 		[BurstCompile(FloatPrecision.Low, FloatMode.Fast)]
-		private struct ToggleJob : IJobParallelFor {
+		public struct ToggleJob : IToggleJob {
 			[ReadOnly] public NativeArray<bool> Input;
 			[WriteOnly] public NativeArray<bool> Output;
 
@@ -52,7 +54,7 @@ namespace Foundation.Parallel {
 		}
 
 		[BurstCompile(FloatPrecision.Low, FloatMode.Fast)]
-		private struct ToggleJob_DeallocateInput : IJobParallelFor {
+		public struct ToggleJob_DeallocateInput : IToggleJob {
 			[ReadOnly, DeallocateOnJobCompletion] public NativeArray<bool> Input;
 			[WriteOnly] public NativeArray<bool> Output;
 
@@ -74,7 +76,7 @@ namespace Foundation.Parallel {
 		}.Schedule(values.Length, innerloopBatchCount, dependency);
 
 		[BurstCompile(FloatPrecision.Low, FloatMode.Fast)]
-		private struct ToggleInPlaceJob : IJobParallelFor {
+		private struct ToggleInPlaceJob : IToggleJob {
 			public NativeArray<bool> Values;
 
 			public void Execute(int index) {
