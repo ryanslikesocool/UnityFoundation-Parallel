@@ -4,7 +4,7 @@ using Unity.Collections;
 using Unity.Jobs;
 using Unity.Mathematics;
 
-namespace Foundation.Parallel {
+namespace Foundation {
 	public static partial class NativeArrayExtensions {
 		public interface ISwizzleJob : IJobParallelFor { }
 

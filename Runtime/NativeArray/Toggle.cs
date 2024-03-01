@@ -2,7 +2,7 @@ using Unity.Jobs;
 using Unity.Collections;
 using Unity.Burst;
 
-namespace Foundation.Parallel {
+namespace Foundation {
 	public static partial class NativeArrayExtensions {
 		public interface IToggleJob : IJobParallelFor { }
 
